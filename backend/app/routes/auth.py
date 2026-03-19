@@ -8,7 +8,7 @@ from app.core.dependencies import get_current_active_user, require_admin
 from fastapi import Depends
 from app.schemas.user import UpdateRoleRequest
 
-from app.main import limiter
+from app.core.ratelimit import limiter
 from fastapi import Request
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])

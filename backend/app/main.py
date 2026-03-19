@@ -8,9 +8,9 @@ from app.db.indexes import create_indexes
 from app.routes import api_router
 
 import logging
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from app.core.ratelimit import limiter
 
 # Configure logging
 logging.basicConfig(
@@ -19,8 +19,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Configure global rate limiting
-limiter = Limiter(key_func=get_remote_address)
+
 
 
 @asynccontextmanager

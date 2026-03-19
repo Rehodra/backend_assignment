@@ -10,7 +10,7 @@ A production-ready full-stack application featuring a FastAPI backend with JWT a
 backend_assignment/
 ├── backend/                    # FastAPI application
 │   ├── app/
-│   │   ├── main.py             # App entry point, CORS, lifespan
+│   │   ├── main.py             # App entry point, CORS, Rate Limiting
 │   │   ├── core/
 │   │   │   ├── config.py       # Pydantic settings (reads .env)
 │   │   │   ├── security.py     # Password hashing, JWT utils
@@ -26,16 +26,27 @@ backend_assignment/
 │   │   │   └── task.py         # Task request/response schemas
 │   │   ├── routes/
 │   │   │   ├── __init__.py     # Versioned API router (/api/v1)
-│   │   │   ├── auth.py         # Auth endpoints
+│   │   │   ├── auth.py         # Auth endpoints (Register, Login)
+│   │   │   ├── oauth.py        # Google OAuth Login
 │   │   │   └── tasks.py        # Task CRUD endpoints
 │   │   └── services/
 │   │       ├── auth_service.py # Auth business logic
 │   │       └── task_service.py # Task business logic
+│   ├── gunicorn_conf.py        # Production Gunicorn config
+│   ├── pyproject.toml          # UV project configuration
 │   ├── requirements.txt
 │   ├── .env.example
 │   └── .env                    # Local dev (gitignored)
 │
-└── frontend/                   # React/Vite application (coming next)
+└── frontend/                   # React/Vite application
+    ├── src/
+    │   ├── api/                # Axios instances & interceptors
+    │   ├── context/            # AuthContext (JWT management)
+    │   ├── pages/              # Login, Register, Dashboard
+    │   ├── App.jsx             # Main routing
+    │   └── main.jsx            # GoogleOAuthProvider setup
+    ├── tailwind.config.js
+    └── package.json
 ```
 
 ---
