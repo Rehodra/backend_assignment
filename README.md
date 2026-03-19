@@ -46,10 +46,12 @@ backend_assignment/
 |-------|-----------|
 | Backend | FastAPI (Python 3.11+) |
 | Database | MongoDB (Motor async driver) |
-| Auth | JWT (python-jose) + bcrypt (passlib) |
-| Validation | Pydantic v2 |
-| Frontend | React + Vite |
+| Auth | JWT + Google OAuth (google-auth) |
+| Security | BCrypt + Rate Limiting (SlowAPI) |
+| Validation | Pydantic v2 (Strict Complexity) |
+| Frontend | React + Vite + Tailwind CSS |
 | Docs | Swagger UI (`/docs`), ReDoc (`/redoc`) |
+| Process Mgmt | Gunicorn + Uvicorn Workers |
 
 ---
 
@@ -78,9 +80,13 @@ pip install -r requirements.txt
 copy .env.example .env
 # Edit .env with your MongoDB URI and a strong JWT_SECRET_KEY
 
-# 5. Run the development server
+# 5. Run the development server (Hot Reload)
 uvicorn app.main:app --reload --port 8000
+
+# 6. Run for Production (Scalable - Multiple Workers)
+gunicorn -c gunicorn_conf.py app.main:app
 ```
+
 
 The API will be available at:
 - **API Base**: `http://localhost:8000/api/v1`
@@ -98,11 +104,13 @@ The API will be available at:
 |--------|----------|------|-------------|
 | POST | `/register` | ❌ | Register new user |
 | POST | `/login` | ❌ | Login, get JWT tokens |
+| POST | `/google` | ❌ | Google OAuth login |
 | POST | `/refresh` | ❌ | Refresh access token |
 | POST | `/logout` | ❌ | Revoke refresh token |
 | GET | `/me` | ✅ User | Get current user profile |
 | GET | `/users` | 🔒 Admin | List all users |
 | PATCH | `/users/{id}/role` | 🔒 Admin | Change user role |
+
 
 ### Tasks (`/api/v1/tasks`)
 
@@ -116,19 +124,7 @@ The API will be available at:
 
 ---
 
-## 🔑 Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MONGO_URI` | `mongodb://localhost:27017` | MongoDB connection string |
-| `MONGO_DB_NAME` | `backend_assignment` | Database name |
-| `JWT_SECRET_KEY` | – | **Required**: Strong secret for JWT signing |
-| `JWT_ALGORITHM` | `HS256` | JWT signing algorithm |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | `30` | Access token TTL |
-| `REFRESH_TOKEN_EXPIRE_DAYS` | `7` | Refresh token TTL |
-| `ALLOWED_ORIGINS` | `http://localhost:5173` | CORS allowed origins (comma-separated) |
-
----
 
 ## 🏗 Architecture & Scalability
 
